@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Correction Utility</title>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <h1>Data Correction Utility</h1>
+    <form action="/update_data" method="post">
+        <input type="hidden" name="entry_id" value="{{ row.id }}">
+        <table>
+            <!-- Table headers -->
+            <tr>
+                <td>{{ row.column_a }}</td>
+                <td>{{ row.original_column_b }}</td>
+                <td>
+                    <input type="text" name="new_value" value="{{ row.proposed_column_c_change }}">
+                </td>
+                <td>
+                    <button type="submit" name="action" value="accept">Accept</button>
+                    <button type="submit" name="action" value="reject">Reject</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</body>
+</html>
