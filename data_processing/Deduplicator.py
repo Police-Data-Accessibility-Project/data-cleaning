@@ -1,8 +1,10 @@
 from typing import List, Dict
 
 import polars as pl
+import pandas as pd
 
 from GoogleSearcher import GoogleSearcher
+from data_processing.DatabaseManager import DatabaseManager
 
 
 class Deduplicator:
@@ -23,7 +25,7 @@ class Deduplicator:
         """
 
 
-    def find_possible_correct_urls(self, duplicates: dict[str, list[dict, str]]) -> list[dict[str, str]]:
+    def find_possible_correct_urls(self):
         """
         Finds possible correct urls for duplicates, utilizing the Google custom Search JSON API to
         attempt to find home pages based on the information in the duplicates
@@ -34,9 +36,9 @@ class Deduplicator:
         Returns:
             dict: dictionary of possible correct urls
         """
-        proposed_correct_url_entries: list[dict[str, str]] = []
-
-        for url, duplicate_list in duplicates.items():
+        dm = DatabaseManager()
+        entries = dm.get_entries_without_proposed_url()
+        for url, duplicate_list in entries.items():
             for entry in duplicate_list:
                 state = entry['state']
                 name = entry['name']
@@ -78,3 +80,25 @@ class Deduplicator:
         Returns:
             list: list of duplicates
         """
+        # Create a dictionary to store duplicates
+        duplicates: dict[str, list[dict, str]] = {}
+        # Create a dictionary to store urls
+        urls: dict[str, list[dict, str]] = {}
+
+        # Iterate through the agency data
+        for index, row in agency_data.to_pandas().iterrows():
+            url = row['homepage_url']
+            # If the url is not in the urls dictionary, add it
+            if url not in urls:
+                urls[url] = []
+            # Add the row to the urls dictionary
+            urls[url].append(row)
+
+        # Iterate through the urls dictionary
+        for url, url_list in urls.items():
+            # If the length of the url list is greater than 1, add it to the duplicates dictionary
+            if len(url_list) > 1:
+                duplicates[url] = url_list
+
+        return duplicates
+
