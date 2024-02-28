@@ -1,0 +1,3 @@
+pyarrow==14.02
+pandas
+polars
