@@ -35,29 +35,9 @@ def parse_args():
     return parser.parse_args()
 
 if __name__ == "__main__":
-    # Parse command line arguments on whether to load data from csv or airtable
-    args = parse_args()
 
-    # Load data from either csv or airtable
-    if args.csv:
-        data = load_csv(args.csv)
-    elif args.airtable:
-        deduplicator = Deduplicator()
-        data = deduplicator.get_agency_data()
-    else:
-        raise ValueError("Either --csv or --airtable must be provided.")
-
-    # Identify duplicates
     deduplicator = Deduplicator()
-    duplicates = deduplicator.identify_duplicates(data)
+    deduplicator.find_possible_correct_urls()
 
-    # Find possible correct urls
-    proposed_correct_url_entries = deduplicator.find_possible_correct_urls(duplicates)
-
-    # Load data into data_correction.db
-    dm = DatabaseManager()
-    dm.create_table()
-    dm.insert_entries(proposed_correct_url_entries)
-    dm.close()
 
 
