@@ -31,7 +31,7 @@ def update_data():
     entry = DataEntry.query.get(entry_id)
 
     if request.form['action'] == 'accept':
-        entry.original_column_b = request.form['new_value']
+        entry.old_url = request.form['new_value']
         flash('Change accepted.', 'success')
     entry.reviewed = True
 
