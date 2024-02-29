@@ -3,16 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Data Correction Completed</title>
+    <!-- Include Bootstrap CSS from CDN for simplicity -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Review Complete</h1>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="flash-{{ category }}">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-    <a href="{{ url_for('index') }}">Start Over</a>
+    <div class="container mt-5">
+        <h1 class="mb-3">Review Complete</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <!-- Utilizing Bootstrap's alert classes for flash messages -->
+              <div class="alert alert-{{ category }}" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Start Over</a>
+    </div>
 </body>
 </html>
