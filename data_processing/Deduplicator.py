@@ -141,6 +141,9 @@ class Deduplicator:
         # Iterate through the agency data
         for index, row in agency_data.to_pandas().iterrows():
             url = row['homepage_url']
+            # If URL is blank, skip
+            if not url or len(url.strip()) == 0:
+                continue
             # If the url is not in the urls dictionary, add it
             if url not in urls:
                 urls[url] = []
