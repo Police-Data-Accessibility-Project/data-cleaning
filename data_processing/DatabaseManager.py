@@ -63,7 +63,20 @@ class DatabaseManager:
         result = self.connection.execute(text('''
             SELECT * FROM entries_to_validate WHERE possible_correct_url = ''
         '''))
-        return result.fetchall()
+        list_of_tuples = result.fetchall()
+        # Convert list of tuples to list of dictionaries
+        list_of_dicts = []
+        for item in list_of_tuples:
+            list_of_dicts.append({
+                'id': item[0],
+                'name': item[1],
+                'state': item[2],
+                'old_url': item[3],
+                'possible_correct_url': item[4],
+                'reviewed': item[5]
+            })
+        return list_of_dicts
+
 
     def update_entry(self, id: int, proposed_url: str):
         """
