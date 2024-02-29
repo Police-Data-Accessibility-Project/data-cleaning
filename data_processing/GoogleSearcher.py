@@ -19,6 +19,6 @@ class GoogleSearcher:
             # Process your results
         except HttpError as e:
             if e.resp.status == 403:
-                raise HttpError(f"Quota exceeded for the day. Original Error: {e}")
+                raise RuntimeError(f"Quota exceeded for the day. Original Error: {e}")
             else:
-                raise HttpError(f"An error occurred: {e}")
+                raise RuntimeError(f"An error occurred: {e}")
