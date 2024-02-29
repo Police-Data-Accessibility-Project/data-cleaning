@@ -2,7 +2,7 @@ from flask import Flask, render_template, session, redirect, url_for, flash, req
 from flask_sqlalchemy import SQLAlchemy
 
 from config import create_app
-from app.models import db, DataEntry
+from models import db, DataEntry
 
 app = create_app()
 # Initialize the database
@@ -33,7 +33,10 @@ def update_data():
     if request.form['action'] == 'accept':
         entry.old_url = request.form['new_value']
         flash('Change accepted.', 'success')
-    entry.reviewed = True
+        entry.approved = True
+    else:
+        entry.approved = False
+        entry.rejection_reason = 'duplicate'
 
     db.session.commit()
 
@@ -46,7 +49,14 @@ def index():
         if 'current_index' not in session:
             session['current_index'] = 0
 
-        entry = DataEntry.query.filter_by(reviewed=False).first()
+        entry = DataEntry.query.filter(
+            db.and_(
+                DataEntry.possible_correct_url != '',
+                DataEntry.approved.isnot(True),
+                DataEntry.rejection_reason == ''
+            )
+        ).first()
+        print(entry)
         if entry:
             return render_template('index.html', row=entry)
         else:
