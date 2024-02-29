@@ -6,6 +6,66 @@ import pandas as pd
 from GoogleSearcher import GoogleSearcher
 from data_processing.DatabaseManager import DatabaseManager
 
+states = {
+        'AK': 'Alaska',
+        'AL': 'Alabama',
+        'AR': 'Arkansas',
+        'AS': 'American Samoa',
+        'AZ': 'Arizona',
+        'CA': 'California',
+        'CO': 'Colorado',
+        'CT': 'Connecticut',
+        'DC': 'District of Columbia',
+        'DE': 'Delaware',
+        'FL': 'Florida',
+        'GA': 'Georgia',
+        'GU': 'Guam',
+        'HI': 'Hawaii',
+        'IA': 'Iowa',
+        'ID': 'Idaho',
+        'IL': 'Illinois',
+        'IN': 'Indiana',
+        'KS': 'Kansas',
+        'KY': 'Kentucky',
+        'LA': 'Louisiana',
+        'MA': 'Massachusetts',
+        'MD': 'Maryland',
+        'ME': 'Maine',
+        'MI': 'Michigan',
+        'MN': 'Minnesota',
+        'MO': 'Missouri',
+        'MP': 'Northern Mariana Islands',
+        'MS': 'Mississippi',
+        'MT': 'Montana',
+        'NA': 'National',
+        'NC': 'North Carolina',
+        'ND': 'North Dakota',
+        'NE': 'Nebraska',
+        'NH': 'New Hampshire',
+        'NJ': 'New Jersey',
+        'NM': 'New Mexico',
+        'NV': 'Nevada',
+        'NY': 'New York',
+        'OH': 'Ohio',
+        'OK': 'Oklahoma',
+        'OR': 'Oregon',
+        'PA': 'Pennsylvania',
+        'PR': 'Puerto Rico',
+        'RI': 'Rhode Island',
+        'SC': 'South Carolina',
+        'SD': 'South Dakota',
+        'TN': 'Tennessee',
+        'TX': 'Texas',
+        'UT': 'Utah',
+        'VA': 'Virginia',
+        'VI': 'Virgin Islands',
+        'VT': 'Vermont',
+        'WA': 'Washington',
+        'WI': 'Wisconsin',
+        'WV': 'West Virginia',
+        'WY': 'Wyoming'
+}
+
 
 class Deduplicator:
 
@@ -38,33 +98,26 @@ class Deduplicator:
         """
         dm = DatabaseManager()
         entries = dm.get_entries_without_proposed_url()
-        for url, duplicate_list in entries.items():
-            for entry in duplicate_list:
-                state = entry['state']
-                name = entry['name']
-                search_string = f'{name} {state} Home Page'
-                # search for possible correct url
-                try:
-                    search_results = self.google_searcher.search(search_string)
-                except Exception as e:
-                    # If exception mentions quota, stop search
-                    if "Quota" in str(e):
-                        print("Quota exceeded for the day")
-                        return proposed_correct_url_entries
-                    else:
-                        raise e
-                # For now, select only first search result as possible correct url
-                possible_correct_url = search_results[0]['link']
-                proposed_correct_url_entry = {
-                    'name': name,
-                    'state': state,
-                    'old_url': url,
-                    'possible_correct_url': possible_correct_url
-                }
-                proposed_correct_url_entries.append(proposed_correct_url_entry)
-
-        return proposed_correct_url_entries
-
+        for entry in entries:
+            state = states[entry['state']]
+            name = entry['name']
+            # search for possible correct url
+            try:
+                search_results = self.google_searcher.search(
+                    query=f'{name} {state} Home Page'
+                )
+            except Exception as e:
+                # If exception mentions quota, stop search
+                if "Quota" in str(e):
+                    print("Quota exceeded for the day. Original error: ", e)
+                    return
+                else:
+                    raise e
+            # For now, select only first search result as possible correct url
+            # Log
+            possible_correct_url = search_results[0]['link']
+            print(f"Found {possible_correct_url} results for {name} {state} Home Page")
+            dm.update_entry(entry['id'], possible_correct_url)
 
 
     def identify_duplicates(self, agency_data: pl.DataFrame) -> dict[str, list[dict, str]]:
