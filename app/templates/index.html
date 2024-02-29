@@ -3,34 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <title>Data Correction Utility</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-          <div class="flash-{{ category }}">{{ message }}</div>
+          <!-- Using Bootstrap's alert classes for flash messages -->
+          <div class="alert alert-{{ category }}" role="alert">
+            {{ message }}
+          </div>
         {% endfor %}
       {% endif %}
     {% endwith %}
 
-    <h1>Data Correction Utility</h1>
-    <form action="/update_data" method="post">
-        <input type="hidden" name="entry_id" value="{{ row.id }}">
-        <table>
-            <!-- Table headers -->
-            <tr>
-                <td>{{ row.column_a }}</td>
-                <td>{{ row.original_column_b }}</td>
-                <td>
-                    <input type="text" name="new_value" value="{{ row.proposed_column_c_change }}">
-                </td>
-                <td>
-                    <button type="submit" name="action" value="accept">Accept</button>
-                    <button type="submit" name="action" value="reject">Reject</button>
-                </td>
-            </tr>
-        </table>
-    </form>
-
+    <div class="container">
+        <h1>Data Correction Utility</h1>
+        <form action="/update_data" method="post" class="mt-3">
+            <input type="hidden" name="entry_id" value="{{ row.id }}">
+            <div class="row">
+                <!-- Agency Name -->
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="agencyName">Agency Name</label>
+                        <input type="text" class="form-control" id="agencyName" value="{{ row.name }}" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Old URL -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="oldUrl">Old URL</label>
+                        <input type="url" class="form-control" id="oldUrl" value="{{ row.old_url }}" disabled>
+                    </div>
+                </div>
+                <!-- Possible Correct URL -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="newUrl">Possible Correct URL</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="newUrl" name="new_value" value="{{ row.possible_correct_url }}">
+                            <div class="input-group-append">
+                                <a href="{{ row.possible_correct_url }}" class="btn btn-outline-secondary" target="_blank">Go to URL</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Accept/Reject Buttons -->
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-success" name="action" value="accept">Accept</button>
+                    <button type="submit" class="btn btn-danger" name="action" value="reject">Reject</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="container">
+        <div class="embed-responsive embed-responsive-16by9 mt-3">
+            <iframe class="embed-responsive-item" id="urlPreview" src="{{ row.possible_correct_url }}" allowfullscreen></iframe>
+        </div>
+    </div>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.5/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
