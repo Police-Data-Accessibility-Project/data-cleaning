@@ -1,7 +1,7 @@
 from flask import render_template, session, redirect, url_for, flash, request
 
-from app.config import create_app
-from app.models import db, DataEntry
+from config import create_app
+from models import db, DataEntry
 
 app = create_app()
 # Initialize the database
