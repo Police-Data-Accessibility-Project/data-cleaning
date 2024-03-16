@@ -8,11 +8,36 @@ Pulls data from [PDAP Agencies Airtable](https://airtable.com/app473MWXVJVaD7Es/
 
 ## Installation
 
-Before running, make sure to install the required packages.
+Before running the project, make sure to set up a virtual environment and install the required packages.
 
-```bash
-pip install -r requirements.txt
-```
+### Setting up a virtual environment
+
+1. Install Python and ensure that Python and pip are added to your path.
+
+2. Create a virtual environment:
+   ```bash
+   # For Unix/macOS
+   python3 -m venv venv
+
+   # For Windows
+   python -m venv venv
+
+3. Activate the virtual environment:
+   ```bash
+   # For Unix/macOS
+   source venv/bin/activate
+
+   # For Windows
+   venv\Scripts\activate
+   ```
+4. Install the required packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
+5. When you are done, deactivate the virtual environment:
+   ```bash
+   deactivate
+   ```
 
 ## Data Loading
 
