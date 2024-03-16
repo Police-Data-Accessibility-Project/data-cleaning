@@ -23,7 +23,7 @@ def create_app():
     if not os.path.exists(database_path):
         raise FileNotFoundError(f"No database file found at {database_path}"
                                 f"Ensure database file is created "
-                                f"and app is run from proper working directory at root of project")
+                                f"and app is run from proper working directory (currently {os.getcwd()}) at root of project")
     else:
         print(f"Database file found at {database_path}")
     return app
