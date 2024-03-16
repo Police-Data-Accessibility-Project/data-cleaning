@@ -35,7 +35,7 @@ To run pipeline.py, you will need to set the following environment variables in 
 
 To obtain these variables, follow the instructions in [Google's Custom Search API documentation](https://developers.google.com/custom-search/v1/overview).
 
-Note that if you are using a free tier, you will only be able to obtain at most 100 proposed urls per day.
+Note that if you are using a free tier, you will only be able to obtain at most 100 proposed urls per day. The script will run until either all duplicate urls are resolved or the quota is reached.
 
 ```bash
 python data_processing/pipeline.py
