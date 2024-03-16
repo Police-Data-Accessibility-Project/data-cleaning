@@ -8,7 +8,9 @@ Before running, make sure to install the required packages.
 pip install -r requirements.txt
 ```
 
-To utilize this tool, either utilize the PDAP Interface (not currently completed) or download a csv of the Agencies data and run initial_data_load.py to load the data into the database.
+To utilize this tool, either utilize the PDAP Interface to download airtable data directly(not currently completed) 
+or download a csv of the Agencies data (available [here](https://airtable.com/app473MWXVJVaD7Es/shr43ihbyM8DDkKx4/tblpnd3ei5SlibcCX))
+and run initial_data_load.py to load the data into the database.
 
 ```bash
 python data_processing/initial_data_load.py --csv input.csv
