@@ -1,8 +1,7 @@
-from flask import Flask, render_template, session, redirect, url_for, flash, request
-from flask_sqlalchemy import SQLAlchemy
+from flask import render_template, session, redirect, url_for, flash, request
 
-from config import create_app
-from models import db, DataEntry
+from app.config import create_app
+from app.models import db, DataEntry
 
 app = create_app()
 # Initialize the database
