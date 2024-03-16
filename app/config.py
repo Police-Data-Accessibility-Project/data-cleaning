@@ -4,7 +4,9 @@ from flask import Flask
 
 
 class Config:
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///data_correction.db'
+    # Get path from current working directory to the database file
+    DATABASE_PATH = os.path.join(os.getcwd(), 'instance', 'data_correction.db')
+    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DATABASE_PATH}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = 'your_secret_key'
 
