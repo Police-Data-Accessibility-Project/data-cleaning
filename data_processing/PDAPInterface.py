@@ -8,7 +8,7 @@ import itertools
 from dotenv import load_dotenv
 
 
-class PDAPInteface:
+class PDAPInterface:
 
     def __init__(self):
         load_dotenv()
@@ -31,7 +31,7 @@ class PDAPInteface:
             responses.append(response.json())
 
 if __name__ == "__main__":
-    pdap = PDAPInteface()
+    pdap = PDAPInterface()
     data = pdap.get_agency_data()
     print(data)
     print(data.shape)
