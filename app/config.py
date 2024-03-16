@@ -1,5 +1,6 @@
+import os
+
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 
 
 class Config:
@@ -10,8 +11,8 @@ class Config:
 
 def create_app():
     app = Flask(__name__,
-                template_folder='app/templates',
-                static_folder='app/static')
+                template_folder=os.path.join(os.path.dirname(__file__), 'templates'),
+                static_folder=os.path.join(os.path.dirname(__file__), 'static'))
     app.config.from_object(Config)
     return app
 
