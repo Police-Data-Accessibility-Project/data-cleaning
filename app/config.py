@@ -13,6 +13,7 @@ def create_app():
     app = Flask(__name__,
                 template_folder=os.path.join(os.path.dirname(__file__), 'templates'),
                 static_folder=os.path.join(os.path.dirname(__file__), 'static'))
+    # Load configuration variables into Flask application
     app.config.from_object(Config)
     return app
 
