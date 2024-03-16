@@ -2,6 +2,12 @@ This is a browser-based tool used to assist in resolving duplicate urls in the P
 
 Pulls data from [PDAP Agencies Airtable](https://airtable.com/app473MWXVJVaD7Es/shr43ihbyM8DDkKx4/tblpnd3ei5SlibcCX).
 
+Before running, make sure to install the required packages.
+
+```bash
+pip install -r requirements.txt
+```
+
 To utilize this tool, either utilize the PDAP Interface (not currently completed) or download a csv of the Agencies data and run initial_data_load.py to load the data into the database.
 
 ```bash
